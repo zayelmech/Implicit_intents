@@ -11,12 +11,14 @@ import android.widget.EditText;
 
 public class MainActivity extends AppCompatActivity {
     private EditText mWebsiteEditText;
+    private EditText mLocationEditText;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         mWebsiteEditText = findViewById(R.id.website_edittext);
+        mLocationEditText = findViewById(R.id.location_edittext);
 
     }
 
@@ -39,6 +41,20 @@ public class MainActivity extends AppCompatActivity {
 }
 
     public void openLocation(View view) {
+        // Get the string indicating a location. Input is not validated; it is
+        // passed to the location handler intact.
+        String loc = mLocationEditText.getText().toString();
+
+        // Parse the location and create the intent.
+        Uri addressUri = Uri.parse("geo:0,0?q=" + loc);
+        Intent intent = new Intent(Intent.ACTION_VIEW, addressUri);
+
+        // Find an activity to handle the intent, and start that activity.
+        if (intent.resolveActivity(getPackageManager()) != null) {
+            startActivity(intent);
+        } else {
+            Log.d("ImplicitIntents", "Can't handle this intent!");
+        }
 
     }
 
